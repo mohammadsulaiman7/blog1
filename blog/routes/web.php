@@ -40,3 +40,6 @@ Route::get('profile/{user}', function (User $user) {
 Route::get('delete-account', [HomeController::class, 'deleteUser'])->name('delete-account');
 Auth::routes();
 Route::get('like/{post}',[HomeController::class,'like'])->name('like');
+Route::get('addss',function(){
+
+});
