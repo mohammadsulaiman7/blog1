@@ -2,9 +2,11 @@
 
 use App\Events\PostComment;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
+use App\Models\Group;
 use App\Models\Like;
 use App\Models\Post;
 use App\Models\User;
@@ -40,6 +42,5 @@ Route::get('profile/{user}', function (User $user) {
 Route::get('delete-account', [HomeController::class, 'deleteUser'])->name('delete-account');
 Auth::routes();
 Route::get('like/{post}',[HomeController::class,'like'])->name('like');
-Route::get('addss',function(){
-
-});
+Route::resource('groups',GroupController::class);
+Route::get('join/{id}',[GroupController::class,'join'])->name('join');

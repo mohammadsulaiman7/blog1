@@ -7,8 +7,6 @@ use App\Events\NewPost;
 use App\Events\UpdatePost;
 use App\Models\Comment;
 use App\Models\Post;
-use App\Models\User;
-use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;

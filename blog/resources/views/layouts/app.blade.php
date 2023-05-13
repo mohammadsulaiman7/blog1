@@ -24,13 +24,13 @@
   <div id="app">
         <nav id="nav">
             <div id="logo"><a href="/">Iustitia</a></div>
-            <ul id="ul">
+            <ul id="ul" id="header">
                 <li><a href="/">Home</a></li>
                 <li><a href="{{route('posts.index')}}">Posts</a></li>
                 <li><a href="{{route('posts.create')}}">Create Post</a></li>
                 <li><a href="#">Messages</a></li>
                 <li><a href="#">notifications</a></li>
-                <li><a href="#">groups</a></li>
+                <li><a href="{{route('groups.index')}}">groups</a></li>
             </ul>
            
             @guest

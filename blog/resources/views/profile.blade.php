@@ -16,8 +16,12 @@
     		        <div class="card-content">
                     <h2>{{$user->name}}<small>Auther</small></h3>
                     <div class="icon-block">
-						<a href="{{route('delete-account')}}" class="btn btn-outline-danger"><i class="fa-solid fa-user-minus"></i></a>    
-						<a href="logout" class="btn btn-outline-secondary"><i class="fa-solid fa-right-from-bracket"></i></a>
+						<a href="{{route('delete-account')}}" class="btn btn-outline-danger"><i class="fa-solid fa-user-minus"></i></a> 
+						<form action="{{route('logout')}}" method="POST" class="d-inline-block">
+							@csrf
+							<button type="submit" class="btn btn-outline-secondary"><i class="fa-solid fa-right-from-bracket"></i></button>
+						</form>   
+						{{-- <a href="logout" class="btn btn-outline-secondary"><i class="fa-solid fa-right-from-bracket"></i></a> --}}
 					</div>
 				</div>
                 </div>
