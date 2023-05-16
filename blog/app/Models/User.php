@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'last_seen',
         // 'profile'
     ];
 
@@ -51,5 +52,8 @@ class User extends Authenticatable
     }
     public function groups(){
         return $this->belongsToMany(Group::class);
+    }
+    public function messages(){
+        return $this->hasMany(Message::class);
     }
 }

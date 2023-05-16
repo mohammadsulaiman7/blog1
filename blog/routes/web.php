@@ -5,12 +5,15 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PostController;
 use App\Models\Group;
 use App\Models\Like;
+use App\Models\Message;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -40,7 +43,13 @@ Route::get('profile/{user}', function (User $user) {
 // });
 // TODO : route for user delete account
 Route::get('delete-account', [HomeController::class, 'deleteUser'])->name('delete-account');
-Auth::routes();
 Route::get('like/{post}',[HomeController::class,'like'])->name('like');
-Route::resource('groups',GroupController::class);
+Route::resource('groups',GroupController::class)->middleware('auth');
 Route::get('join/{id}',[GroupController::class,'join'])->name('join');
+Route::get('join-privacy/{id}',[GroupController::class,'joinPrivacy'])->name('join-privacy');
+Route::resource('messages',MessageController::class)->middleware('auth');
+Route::get('chat/{group}',function(Group $group){
+    $messages=Message::where('group_id','=',$group->id)->get();
+    return view('messages.index',compact('messages','group'));
+})->name('chat');
+Auth::routes();

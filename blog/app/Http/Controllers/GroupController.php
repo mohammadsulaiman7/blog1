@@ -4,12 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Group;
-// use App\Models\User;
+use App\Models\User;
 use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-// use Illuminate\Support\Facades\Storage;
-// use Illuminate\Support\Facades\DB;
 class GroupController extends Controller
 {
     /**
@@ -17,24 +15,23 @@ class GroupController extends Controller
      */
     public function index()
     {
-        $groups=Group::get();
-        // $groups=Group::select('groups.*')
+        $groups = Group::get();
+        // $groups=User::find(Auth::user()->id)->with('groups')->get();
         // ->join('group_user','group_user.group_id','=','groups.id')
         // ->where('group_user.user_id','!=',Auth::user()->id)
         // ->where('groups.user_id','!=',Auth::user()->id)
         // ->where('group_user.user_id','!=',Auth::user()->id)
         // ->select('group_user.*')
-        // ->get();
         // return $groups;
-        return view("groups.index",compact('groups'));
+        return view("groups.index", compact('groups'));
     }
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        $categories=Category::get();
-        return view("groups.create",compact('categories'));
+        $categories = Category::get();
+        return view("groups.create", compact('categories'));
     }
 
     /**
@@ -42,21 +39,18 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        $group=Group::create($request->all() + ['user_id'=>Auth::user()->id] );
-        if($request->has('cover'))
-        {
-            $coverMedia=$request->file('cover');
-            $coverName=$group->id . '.' . $coverMedia->extension();
-            $coverMedia->storeAs('groups-cover',$coverName,'public');
-            $group->cover=$coverName;
+        $group = Group::create($request->all() + ['user_id' => Auth::user()->id]);
+        if ($request->has('cover')) {
+            $coverMedia = $request->file('cover');
+            $coverName = $group->id . '.' . $coverMedia->extension();
+            $coverMedia->storeAs('groups-cover', $coverName, 'public');
+            $group->cover = $coverName;
         }
-        if($group->save())
-        {
+        if ($group->save()) {
             $group->users()->attach($group->user_id);
-            return redirect()->route('groups.index')->with('success','create group successfuly');
-        }
-        else 
-        return back()->with('error',"there's error in creating group");
+            return redirect()->route('groups.index')->with('success', 'create group successfuly');
+        } else
+            return back()->with('error', "there's error in creating group");
     }
 
     /**
@@ -64,8 +58,8 @@ class GroupController extends Controller
      */
     public function show(Group $group)
     {
-        
-        return view('groups.show',compact('group'));
+
+        return view('groups.show', compact('group'));
     }
 
     /**
@@ -73,7 +67,7 @@ class GroupController extends Controller
      */
     public function edit(Group $group)
     {
-        return view('groups.edit',compact('group'));
+        return view('groups.edit', compact('group'));
     }
 
     /**
@@ -81,12 +75,10 @@ class GroupController extends Controller
      */
     public function update(Request $request, Group $group)
     {
-        if(!Gate::allows('update-comment',$group))
-        {
+        if (!Gate::allows('update-comment', $group)) {
             abort(404);
-        }
-        else 
-        return "you can update it ";
+        } else
+            return "you can update it ";
     }
 
     /**
@@ -94,15 +86,29 @@ class GroupController extends Controller
      */
     public function destroy(Group $group)
     {
-        //
-    }
-    public function join($id){
-        $group= Group::find($id);
-        if($group->users()->attach(Auth::user()->id))
+        if($group->delete())
         {
-            return redirect()->route('groups.index')->with('success','you joined to the group');
+            return back()->with('success','delete group successfuly');
         }
         else 
-        return back()->with('error','error in adding to the group');
+        return back()->with('error','error in deleteing group');
+    }
+    public function join($id)
+    {
+        $group = Group::find($id);
+        if ($group->users()->attach(Auth::user()->id)) {
+            return redirect()->route('groups.index')->with('success', 'you joined to the group');
+        } else
+            return back()->with('error', 'error in adding to the group');
+    }
+    public function joinPrivacy($id, Request $request)
+    {
+        $group = Group::find($id);
+        if ($request->key == $group->key) {
+            if ($group->users()->attach(Auth::user()->id)) {
+                return back()->with('success', 'you joined to the group privacy');
+            }
+        } else
+            return back()->with('error', 'error in adding to the group');
     }
 }

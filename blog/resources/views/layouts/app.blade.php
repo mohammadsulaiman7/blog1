@@ -28,9 +28,9 @@
                 <li><a href="/">Home</a></li>
                 <li><a href="{{route('posts.index')}}">Posts</a></li>
                 <li><a href="{{route('posts.create')}}">Create Post</a></li>
-                <li><a href="#">Messages</a></li>
-                <li><a href="#">notifications</a></li>
-                <li><a href="{{route('groups.index')}}">groups</a></li>
+                <li><a href="{{route('messages.index')}}">Messages</a></li>
+                <li><a href="#">Notifications</a></li>
+                <li><a href="{{route('groups.index')}}">Groups</a></li>
             </ul>
            
             @guest
@@ -81,5 +81,6 @@
     @vite('public/js/app.js')
     @vite('public/js/updateCommentCount.js')
     @vite('public/js/deleteComment.js')
+    @vite('public/js/newMessage.js')
 </body>
 </html>
