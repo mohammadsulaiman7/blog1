@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Group;
-use App\Models\User;
-use Illuminate\Auth\Access\Gate;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 class GroupController extends Controller
 {
     /**
@@ -15,14 +15,10 @@ class GroupController extends Controller
      */
     public function index()
     {
-        $groups = Group::get();
-        // $groups=User::find(Auth::user()->id)->with('groups')->get();
-        // ->join('group_user','group_user.group_id','=','groups.id')
-        // ->where('group_user.user_id','!=',Auth::user()->id)
-        // ->where('groups.user_id','!=',Auth::user()->id)
-        // ->where('group_user.user_id','!=',Auth::user()->id)
-        // ->select('group_user.*')
-        // return $groups;
+        // $user=User::find(Auth::user()->id);
+        // $hasTask=$user->groups()->where('id','2')->exists();
+        // return $hasTask;
+        $groups=Group::get();
         return view("groups.index", compact('groups'));
     }
     /**
@@ -33,7 +29,6 @@ class GroupController extends Controller
         $categories = Category::get();
         return view("groups.create", compact('categories'));
     }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -52,7 +47,7 @@ class GroupController extends Controller
         } else
             return back()->with('error', "there's error in creating group");
     }
-
+    
     /**
      * Display the specified resource.
      */
@@ -69,10 +64,7 @@ class GroupController extends Controller
     {
         return view('groups.edit', compact('group'));
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
+    
     public function update(Request $request, Group $group)
     {
         if (!Gate::allows('update-comment', $group)) {
@@ -99,16 +91,19 @@ class GroupController extends Controller
         if ($group->users()->attach(Auth::user()->id)) {
             return redirect()->route('groups.index')->with('success', 'you joined to the group');
         } else
-            return back()->with('error', 'error in adding to the group');
+            return back()->with('success', 'adding to the group successfuly');
     }
     public function joinPrivacy($id, Request $request)
     {
         $group = Group::find($id);
         if ($request->key == $group->key) {
             if ($group->users()->attach(Auth::user()->id)) {
-                return back()->with('success', 'you joined to the group privacy');
+                return redirect()->route('groups.index')->with('success', 'you joined to the group privacy');
             }
+            else 
+            return redirect()->route('groups.index')->with('success', 'you joined to the group privacy');
+
         } else
-            return back()->with('error', 'error in adding to the group');
+            return redirect()->route('groups.index')->with('error', 'error in adding to the group');
     }
 }

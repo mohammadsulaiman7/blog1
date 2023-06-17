@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Response;
-
 class UserActivity
 {
     /**
@@ -20,7 +19,7 @@ class UserActivity
     {
         if(Auth::check())
         {
-            $expiresAt = now()->addMinute(1); /* keep online for 10 seconds */
+            $expiresAt = now()->addMinute(1); /* keep online for 1 minute */
             Cache::put('user-is-online-' . Auth::user()->id, true, $expiresAt);
             /* last seen */
             User::where('id', Auth::user()->id)->update(['last_seen' => now()]);

@@ -4,6 +4,8 @@
     <form action="{{ route('posts.store') }}" method="POST" class="w-75 text-center ms-auto me-auto"
         enctype="multipart/form-data">
         @csrf
+        {{-- New feature to add group_id  --}}
+        <input type="hidden" name="group_id" value="{{$id}}">
         <div class="mb-3">
             <label for="title" class="form-label">Artical Title</label>
             <input class="form-control" id="title" name="title"></textarea>

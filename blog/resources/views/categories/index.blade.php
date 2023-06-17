@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','edit group')
+@section('title','Categories')
 @section('content')
-    <h1>Hello</h1>
+    All categories
 @endsection

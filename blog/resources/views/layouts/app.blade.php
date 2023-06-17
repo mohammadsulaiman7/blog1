@@ -25,12 +25,22 @@
         <nav id="nav">
             <div id="logo"><a href="/">Iustitia</a></div>
             <ul id="ul" id="header">
-                <li><a href="/">Home</a></li>
-                <li><a href="{{route('posts.index')}}">Posts</a></li>
-                <li><a href="{{route('posts.create')}}">Create Post</a></li>
-                <li><a href="{{route('messages.index')}}">Messages</a></li>
-                <li><a href="#">Notifications</a></li>
-                <li><a href="{{route('groups.index')}}">Groups</a></li>
+                <li><a href="/"><i class="fa-solid fa-house"></i></a></li>
+                <li><a href="{{route('posts.index')}}"><i class="fa-solid fa-newspaper"></i></a></li>
+                <li><a href="{{route('messages.index')}}"><i class="fa-solid fa-comment"></i></a></li>
+                <li class="position-relative">
+                  <a href="{{route('notifications')}}">
+                    <i class="fa-solid fa-bell"></i>
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-danger text-warning">
+                    @if (Auth::check())
+                    <span id="count-noti">{{auth()->user()->unreadNotifications->count()}}</span>
+                    <span class="visually-hidden">unread messages</span>
+                  </span>
+                    @else
+                    @endif
+                </a>
+                </li>
+                <li><a href="{{route('groups.index')}}"><i class="fa-solid fa-people-group"></i></a></li>
             </ul>
            
             @guest

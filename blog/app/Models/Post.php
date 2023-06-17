@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory,Notifiable;
     public $timestamps=false;
     protected $guarded=[];
     public function user(){
@@ -18,5 +19,8 @@ class Post extends Model
     }
     public function likes(){
         return $this->hasMany(Like::class);
+    }
+    public function group(){
+        return $this->belongsTo(Group::class,'group_id');
     }
 }

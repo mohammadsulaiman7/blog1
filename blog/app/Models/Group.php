@@ -22,4 +22,7 @@ class Group extends Model
     public function messages(){
         return $this->hasMany(Message::class);
     }
+    public function posts(){
+        return $this->hasMany(Post::class);
+    }
 }

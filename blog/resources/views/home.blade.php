@@ -3,6 +3,7 @@
 @section('title','Home')
 @section('content')
 <div class="home-container">
-    <h1><span class="logo-special">Iustitia </span>Write <span class="logo-special"> ,</span> Read  <span class="logo-special"> And </span>Share!</h1>
-    {{-- <h2><span class="logo-special">Iustitia </span> See the World!</h2> --}}
+    <h1>
+        <span class="logo-special">Iustitia </span>Write <span class="logo-special"> ,</span> Read  <span class="logo-special"> And 
+            </span>Share!</h1>
 @endsection

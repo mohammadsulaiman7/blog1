@@ -8,24 +8,18 @@ use Illuminate\Queue\InteractsWithQueue;
 
 class welcomingNewUser
 {
-    /**
-     * Create the event listener.
-     */
+
     public function __construct()
     {
-        //
-    }
 
-    /**
-     * Handle the event.
-     */
+    }
     public function handle(NewUser $event)
     {
         if($event->check == "welcome")
         {
-            return redirect()->route('posts.index')->with('welcome');
+            return redirect()->route('posts.index')->with('welcome',"Welcome bro");
         }
-        else 
+        else
         return redirect()->back()->with('error');
     }
 }

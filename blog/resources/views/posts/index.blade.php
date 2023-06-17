@@ -30,7 +30,8 @@
                     @method('DELETE')
                     <button type="submit" class="btn btn-outline-danger"><i class="fa-solid fa-trash"></i></button>
                 </form>
-            @endcan</div>
+            @endcan
+          </div>
           <div class="projcard-bar"></div>
           <div class="projcard-description">{{ Str::limit($post->content,60)}}
             @if (Str::length($post->content) >60)
@@ -49,7 +50,6 @@
     </div>
   </div>
     @endforeach
-   
     @vite('public/js/custom.js')
     @vite('public/js/deletePost.js')
     @vite('public/js/updatePost.js')

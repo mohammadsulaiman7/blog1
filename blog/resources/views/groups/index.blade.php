@@ -25,23 +25,39 @@
         <ul id="group-ul">
           <li>Created by : <span class="text-warning">{{$group->user->name}}</span></li>
           <li>users count : <span class="text-warning">{{$group->users->count()}}</span></li>
-          <li>posts count : <span class="text-warning">0</span></li>
+          <li>posts count : <span class="text-warning">{{$group->posts->count()}}</span></li>
           <li>Category : <span class="text-warning">{{$group->category->name}}</span></li>
         </ul>
       </div>
       <div class="card-back">
-        <a href="{{route('chat',$group)}}" class="btn btn-outline-secondary"><i class="fa-brands fa-rocketchat"></i></a>
         <figure>
           <div class="img-bg"></div>
           <img src="{{asset('storage/groups-cover/'.$group->cover)}}">
         </figure>
         @if ($group->user_id == Auth::user()->id)
+        <a href="{{route('chat',$group)}}" class="btn btn-outline-secondary"><i class="fa-brands fa-rocketchat"></i></a>
         <a href="{{route('groups.show',$group)}}" class="btn btn-outline-success ms-2 me-2"><i class="fa-solid fa-eye"></i></a>
         @else
+        
         @if ($group->privacy == false)
+
+        @if (!($group->users()->where('id',Auth::user()->id)->exists()))
+        
         <a href="{{route('join',$group->id)}}" class="btn btn-outline-primary"><i class="fa-solid fa-door-open"></i></a>
+
+        @endif
+        
         <a href="{{route('groups.show',$group)}}" class="btn btn-outline-success ms-2 me-2"><i class="fa-solid fa-eye"></i></a>
-        @else 
+
+        @else
+
+        @if (($group->users()->where('id',Auth::user()->id)->exists()))
+
+        <a href="{{route('chat',$group)}}" class="btn btn-outline-secondary"><i class="fa-brands fa-rocketchat"></i></a>
+        <a href="{{route('groups.show',$group)}}" class="btn btn-outline-success ms-2 me-2"><i class="fa-solid fa-eye"></i></a>
+
+        @else
+        
         <form action="{{route('join-privacy',$group->id)}}" method="GET">
           @csrf
           <div class="Key">
@@ -50,6 +66,7 @@
             <button type="submit" class="btn btn-outline-success">Join</button>
         </div>
         </form>
+        @endif
         @endif
         @endif
         @can('group-update', $group)
@@ -62,15 +79,14 @@
             </form>
         @endcan
       </div>
-      {{-- <a href="{{route('messages.index',$group)}}">Chat</a> --}}
     </div>
   </div>
   @endforeach
   </div>
   </div>
-<div class="col2-group">
-  <h1>Your groups</h1>
-  <hr>
-</div>
+   <div class="col2-group">
+    <h1>Your groups</h1>
+    <hr>
+  </div>
   </div>
 @endsection

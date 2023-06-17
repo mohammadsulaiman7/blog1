@@ -7,42 +7,27 @@ use App\Events\NewPost;
 use App\Events\UpdatePost;
 use App\Models\Comment;
 use App\Models\Post;
+use App\Models\User;
+use App\Notifications\NewPost as NotificationsNewPost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $posts = Post::get();
+        $posts=Post::get();
         return view('posts.index', compact('posts'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
+    
     public function create()
     {
-        return view('posts.create');
+        return view('posts.create',compact('group_id'));
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        // $post = Post::create($request->all() + ['user_id' => Auth::user()->id]);
-        // if ($post->save())
-        // {
-        //     event(new NewPost($post->title,$post->content));
-        //     return redirect()->route('posts.index')->with('success', 'Create post successfuly');
-        // }
-        // else
-        //     return abort(403);
         $request->validate([
             'title'=>'required|max:100|string',
             'content'=>'required|string',
@@ -57,19 +42,18 @@ class PostController extends Controller
         }
         $post->save();
         event(new NewPost($post->title,$post->media, $post->content,$post->user->name));
+        $users=User::join('group_user','group_user.user_id','=','users.id')
+        ->where('group_user.group_id','LIKE',$request->group_id)
+        ->where('user_id','!=',Auth::user()->id)
+        ->get();
+        Notification::send($users,new NotificationsNewPost($post));
         return redirect()->route('posts.index')->with('success', 'added post successfuly');
     }
-    /**
-     * Display the specified resource.
-     */
     public function show(Post $post)
     {
         $comments = Comment::where('post_id', 'LIKE', $post->id)->with('user')->get();
         return view('posts.show', compact('post', 'comments'));
     }
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Post $post)
     {
         if (!Gate::allows('update-post', $post)) {
@@ -77,7 +61,6 @@ class PostController extends Controller
         }
         return view('posts.edit', compact('post'));
     }
-
     /**
      * Update the specified resource in storage.
      */

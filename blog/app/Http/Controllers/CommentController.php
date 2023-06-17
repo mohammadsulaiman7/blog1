@@ -6,15 +6,15 @@ use App\Events\DeleteComment;
 use App\Events\PostComment;
 use App\Events\UpdateCommentCount;
 use App\Models\Comment;
+use App\Models\User;
+use App\Notifications\NewComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Notification;
 
 class CommentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         //
@@ -37,6 +37,8 @@ class CommentController extends Controller
         {
             event(new UpdateCommentCount(Comment::count()));
             event(new PostComment($comment->comment));
+            $user=User::where('id','=',$comment->post->user_id)->first();
+            Notification::send($user,new NewComment($comment));
             return back()->with('success','comment added successfuly');
         }
         else 

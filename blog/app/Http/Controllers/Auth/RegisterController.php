@@ -6,11 +6,13 @@ use App\Events\NewUser;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Notifications\NewUser as NotificationsNewUser;
 use Faker\Extension\FileExtension;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 class RegisterController extends Controller
 {
@@ -87,6 +89,8 @@ class RegisterController extends Controller
             else 
             $user->profile='no-profile.png';
             $user->save();
+            $user1=User::get();
+            Notification::send($user1,new NotificationsNewUser($user->name));
             return $user;
     }
 }
