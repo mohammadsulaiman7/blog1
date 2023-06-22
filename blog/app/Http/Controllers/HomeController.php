@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\Like;
 use App\Models\Post;
 use App\Models\User;
@@ -9,7 +7,6 @@ use App\Notifications\LikePost;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
-
 class HomeController extends Controller
 {
     public function __construct()
@@ -49,7 +46,8 @@ class HomeController extends Controller
                     return back()->with('success', "Liked");
             else
                 return back()->with('error', 'error in liked');
-        } else {
+        }
+        else {
             $like = new Like();
             $like->user_id = Auth::user()->id;
             $like->post_id = $post->id;

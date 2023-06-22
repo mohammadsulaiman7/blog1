@@ -10,9 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         // $user=User::find(Auth::user()->id);
@@ -21,17 +19,13 @@ class GroupController extends Controller
         $groups=Group::get();
         return view("groups.index", compact('groups'));
     }
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
         $categories = Category::get();
         return view("groups.create", compact('categories'));
     }
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
         $group = Group::create($request->all() + ['user_id' => Auth::user()->id]);
@@ -47,24 +41,18 @@ class GroupController extends Controller
         } else
             return back()->with('error', "there's error in creating group");
     }
-    
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Group $group)
     {
 
         return view('groups.show', compact('group'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Group $group)
     {
         return view('groups.edit', compact('group'));
     }
-    
+
     public function update(Request $request, Group $group)
     {
         if (!Gate::allows('update-comment', $group)) {
@@ -72,10 +60,7 @@ class GroupController extends Controller
         } else
             return "you can update it ";
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(Group $group)
     {
         if($group->delete())

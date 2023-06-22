@@ -20,16 +20,10 @@ class CommentController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $comment=Comment::create($request->all() + ['user_id' => Auth::user()->id]);
@@ -44,17 +38,11 @@ class CommentController extends Controller
         else 
         abort(403);
     }
-    /**
-     * Display the specified resource.
-     */
     public function show(Comment $comment)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Comment $comment)
     {
         if(!Gate::allows('update-comment',$comment))
@@ -64,10 +52,6 @@ class CommentController extends Controller
         else 
         return "You can do it";
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Comment $comment)
     {
         if($comment->update($request->all()))
@@ -76,17 +60,16 @@ class CommentController extends Controller
         return back()->with('error','error in updating comment');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Comment $comment)
     {
         event(new DeleteComment($comment->id));
         if($comment->delete())
         {
+            // return back()->with('success','delete comment successfuly');
             return back()->with('success','delete comment successfuly');
         }
         else 
-        return back()->with('error','error in deleting comment');
+        // return back()->with('error','error in deleting comment');
+        return back()->with('error','error in deleteing comment');
     }
 }

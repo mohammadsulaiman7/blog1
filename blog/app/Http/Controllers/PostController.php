@@ -21,7 +21,6 @@ class PostController extends Controller
         $posts=Post::get();
         return view('posts.index', compact('posts'));
     }
-    
     public function create()
     {
         return view('posts.create',compact('group_id'));
@@ -61,9 +60,6 @@ class PostController extends Controller
         }
         return view('posts.edit', compact('post'));
     }
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Post $post)
     {
         $post->title=$request->title;
@@ -79,9 +75,6 @@ class PostController extends Controller
         event(new UpdatePost($post->media, $post->content));
         return redirect()->route('posts.index')->with('success', 'updated post successfuly');
     }
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Post $post)
     {
         event(new DeletePost($post->id));

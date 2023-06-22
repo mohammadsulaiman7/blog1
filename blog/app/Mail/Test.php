@@ -15,7 +15,7 @@ class Test extends Mailable
 
     public function __construct()
     {
-        
+
     }
 
     public function envelope(): Envelope
@@ -24,13 +24,13 @@ class Test extends Mailable
             subject: 'Test',
         );
     }
+    
     public function content(): Content
     {
         return new Content(
             view: 'emails.test',
         );
     }
-    
     public function attachments(): array
     {
         return [];

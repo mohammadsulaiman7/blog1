@@ -8,7 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 
 class welcomingNewUser
 {
-
+    
     public function __construct()
     {
 

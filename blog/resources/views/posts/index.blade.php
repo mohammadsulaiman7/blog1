@@ -53,5 +53,4 @@
     @vite('public/js/custom.js')
     @vite('public/js/deletePost.js')
     @vite('public/js/updatePost.js')
-    {{-- @vite('public/js/custom1.js') --}}
 @endsection
